@@ -1,20 +1,28 @@
 package Cubes;
 
-import java.time.Year;
 import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.Calendar;
 import java.util.Date; 
 
 public class MainClass {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		int currentYear = Year.now().getValue();
-		Date d = new Date();
-		int currentMonth = (d.getMonth()+1);
+		String jmbg;
 		byte option = 0;
-			do {
-				String jmbg;
+
+		do {
+			Date d = new Date();
+			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Belgrade"));
+			cal.setTime(d);
+			int currentYear = cal.get(Calendar.YEAR);
+			int currentMonth = cal.get(Calendar.MONTH) + 1;
+			int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+			System.out.println("Unesite Vas JMBG: ");
+			jmbg = scanner.next();
 				
+			if(jmbg.length() == 13) {
 				String dd;
 				String mm;
 				String ggg;
@@ -22,11 +30,8 @@ public class MainClass {
 				String bbb;
 				String k;
 				
-				System.out.println("Unesite Vas JMBG: ");
-				jmbg = scanner.next();
-				
-					System.out.println("Vas jmbg je: " + jmbg);
-					System.out.println("");
+				System.out.println("Vas jmbg je: " + jmbg);
+				System.out.println("");
 					
 				dd = jmbg.substring(0, 2);
 				int ddInt = Integer.parseInt(dd);
@@ -60,7 +65,6 @@ public class MainClass {
 				String l10;
 				String l11;
 				String l12;
-				String l13;
 				
 				l1 = jmbg.substring(0,1);
 				int l1Int = Integer.parseInt(l1);
@@ -86,8 +90,6 @@ public class MainClass {
 				int l11Int = Integer.parseInt(l11);
 				l12 = jmbg.substring(11,12);
 				int l12Int = Integer.parseInt(l12);
-				l13 = jmbg.substring(12,13);
-				int l13Int = Integer.parseInt(l13);
 				
 				//OUTPUT DAYS
 				if( (gggInt % 100 != 0 && gggInt % 4 == 0) && mmInt == 02 && (ddInt > 29 || ddInt < 1) ) {
@@ -147,7 +149,7 @@ public class MainClass {
 				if(gggInt > 900) {
 					gggInt = 1000 + gggInt;
 					System.out.println("Godina rodjenja je: " + gggInt);
-				} else if( (2000 + gggInt) > currentYear || mmInt > currentMonth) {
+				} else if( (2000 + gggInt) > currentYear || mmInt > currentMonth || ddInt > currentDay) {
 					gggInt = 0;
 					System.out.println("Uneli ste pogresno 5, 6, ili 7.");
 				} else if(gggInt < 100){
@@ -200,7 +202,12 @@ public class MainClass {
 				System.out.println("");
 				System.out.print("Ukoliko zelite opet da validirate JMBG, pritisnite (1). Ako ne, pritisnite bilo koji drugi broj! ");
 				option = scanner.nextByte();
-			}while(option == 1);		
+			} else if(jmbg.length() != 13) {
+				System.out.println("JMBG mora imati 13 brojeva!!!");
+				option = 1;
+			}
+
+		}while(option == 1);
 			
 			scanner.close();
 	}
